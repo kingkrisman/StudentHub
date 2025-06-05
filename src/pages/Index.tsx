@@ -147,10 +147,14 @@ const Index = () => {
               </span>
             </div>
             <div className="flex space-x-4">
-              <Button variant="ghost">Sign In</Button>
-              <Button className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600">
-                Get Started
-              </Button>
+              <Link to="/auth/signin">
+                <Button variant="ghost">Sign In</Button>
+              </Link>
+              <Link to="/auth/signup">
+                <Button className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600">
+                  Get Started
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -184,18 +188,21 @@ const Index = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-lg px-8 py-3"
-            >
-              Start Earning Today
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-3">
-              Learn How It Works
-            </Button>
+            <Link to="/auth/signup">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-lg px-8 py-3"
+              >
+                Start Earning Today
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/jobs">
+              <Button variant="outline" size="lg" className="text-lg px-8 py-3">
+                Browse Opportunities
+              </Button>
+            </Link>
           </div>
-
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             <div className="text-center">
@@ -376,13 +383,15 @@ const Index = () => {
             </div>
           </div>
 
-          <Button
-            size="lg"
-            className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-3 font-semibold"
-          >
-            Join the Movement Today
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          <Link to="/auth/signup">
+            <Button
+              size="lg"
+              className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-3 font-semibold"
+            >
+              Join the Movement Today
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -398,19 +407,23 @@ const Index = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-lg px-8 py-3"
-            >
-              Create Your Profile
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-gray-900"
-            >
-              Browse Opportunities
-            </Button>
+            <Link to="/auth/signup">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-lg px-8 py-3"
+              >
+                Create Your Profile
+              </Button>
+            </Link>
+            <Link to="/jobs">
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-gray-900"
+              >
+                Browse Opportunities
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -435,19 +448,19 @@ const Index = () => {
               <h4 className="font-semibold mb-4">Platform</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <Link to="/jobs" className="hover:text-white">
                     How It Works
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <Link to="/community" className="hover:text-white">
                     Success Stories
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <Link to="/safety" className="hover:text-white">
                     Safety Guidelines
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -456,23 +469,22 @@ const Index = () => {
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <Link to="/help" className="hover:text-white">
                     Help Center
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <Link to="/help" className="hover:text-white">
                     Contact Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <Link to="/community" className="hover:text-white">
                     Community
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
-
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-gray-400">
