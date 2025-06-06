@@ -39,6 +39,7 @@ import {
   Filter,
   MapPin,
   Briefcase,
+  Zap,
 } from "lucide-react";
 
 const Dashboard = () => {
