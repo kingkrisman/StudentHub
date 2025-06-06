@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../App";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,20 +16,53 @@ import { Smartphone, Mail, Eye, EyeOff, ArrowRight } from "lucide-react";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false,
   });
 
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    if (error) setError(""); // Clear error when user types
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign in logic here
-    console.log("Sign in data:", formData);
+    setIsLoading(true);
+    setError("");
+
+    try {
+      // Simulate API call - in real app, this would be an actual authentication API
+      if (formData.email && formData.password) {
+        // Mock successful authentication
+        const userData = {
+          name: "Adebayo Johnson",
+          email: formData.email,
+          avatar: "",
+        };
+
+        // Update auth context
+        login(userData);
+
+        // Show success message briefly
+        console.log("Sign in successful!");
+
+        // Redirect to dashboard
+        navigate("/dashboard", { replace: true });
+      } else {
+        setError("Please fill in all required fields");
+      }
+    } catch (err) {
+      setError("Invalid email or password. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
