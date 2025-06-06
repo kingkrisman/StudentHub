@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../App";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,6 +35,13 @@ import {
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/", { replace: true });
+  };
 
   // Mock user data
   const user = {
@@ -511,15 +519,21 @@ const Dashboard = () => {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm">Active Students</span>
-                    </div>
-                    <span className="text-sm font-semibold">2,847</span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
+                <Avatar>
+                  <AvatarImage src={user?.avatar} />
+                  <AvatarFallback>
+                    {user?.name.split(' ').map(n => n[0]).join('') || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="hidden md:block">
+                  <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
+                  <p className="text-xs text-gray-500">{user?.email || 'student@university.edu.ng'}</p>
+                </div>
+                <Button variant="ghost" size="sm" onClick={handleLogout} className="hidden md:flex">
+                  Logout
+                </Button>
+              </div>
                       <MessageSquare className="h-4 w-4 text-gray-500" />
                       <span className="text-sm">New Messages</span>
                     </div>
