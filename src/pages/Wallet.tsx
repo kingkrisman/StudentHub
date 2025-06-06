@@ -562,7 +562,9 @@ const Wallet = () => {
                   </div>
                 </div>
               ))}
-        </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Footer />
