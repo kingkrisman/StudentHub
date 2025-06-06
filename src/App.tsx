@@ -38,6 +38,7 @@ import Safety from "./pages/Safety";
 import Sitemap from "./pages/Sitemap";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
+import Analytics from "./pages/Analytics";
 
 // Auth Context
 interface User {
@@ -183,6 +184,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Notifications />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <ProtectedRoute>
+                    <Analytics />
                   </ProtectedRoute>
                 }
               />
