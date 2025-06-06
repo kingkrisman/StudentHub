@@ -36,6 +36,8 @@ import Help from "./pages/Help";
 import Community from "./pages/Community";
 import Safety from "./pages/Safety";
 import Sitemap from "./pages/Sitemap";
+import Messages from "./pages/Messages";
+import Notifications from "./pages/Notifications";
 
 // Auth Context
 interface User {
@@ -124,6 +126,8 @@ const App = () => {
               <Route path="/community" element={<Community />} />
               <Route path="/safety" element={<Safety />} />
               <Route path="/sitemap" element={<Sitemap />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/notifications" element={<Notifications />} />
 
               {/* Protected routes */}
               <Route
@@ -163,6 +167,22 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <MyJobs />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/messages"
+                element={
+                  <ProtectedRoute>
+                    <Messages />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <ProtectedRoute>
+                    <Notifications />
                   </ProtectedRoute>
                 }
               />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../App";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import {
   Bell,
   Calendar,
@@ -30,371 +32,360 @@ import {
   CheckCircle,
   AlertCircle,
   Smartphone,
-  Menu,
-  LogOut,
+  BookOpen,
+  Award,
+  Heart,
+  Share2,
+  Filter,
+  MapPin,
+  Briefcase,
 } from "lucide-react";
 
 const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
+  const [notifications, setNotifications] = useState([]);
+  const [activeTab, setActiveTab] = useState("overview");
 
-  const handleLogout = () => {
-    logout();
-    navigate("/", { replace: true });
-  };
-
-  // Mock user data
+  // Mock user data with enhanced features
   const userData = {
     name: user?.name || "Student User",
     email: user?.email || "student@university.edu.ng",
-    university: "University of Lagos",
-    level: "300 Level",
-    course: "Computer Science",
     avatar: user?.avatar || "",
-    rating: 4.8,
-    completedJobs: 24,
+    university: "University of Lagos",
+    course: "Computer Science",
+    year: "3rd Year",
+    profileCompletion: 85,
     totalEarnings: 125000,
+    completedJobs: 23,
     activeJobs: 3,
+    rating: 4.8,
+    reviews: 45,
+    skillLevel: "Intermediate",
+    joinDate: "January 2024",
+    followers: 89,
+    following: 156,
   };
 
+  // Enhanced recent jobs with more details
   const recentJobs = [
     {
       id: 1,
-      title: "Design a logo for tech startup",
-      category: "Freelancing",
-      amount: 15000,
-      status: "in_progress",
+      title: "Design Instagram Story Templates",
+      client: "Fashion Brand Lagos",
+      amount: 25000,
+      status: "In Progress",
+      progress: 75,
       deadline: "2 days",
-      client: "TechCorp Ltd",
+      category: "Design",
+      priority: "high",
+      messages: 3,
+      liked: true,
     },
     {
       id: 2,
-      title: "Tutor Mathematics for secondary school student",
-      category: "Tutoring",
-      amount: 5000,
-      status: "completed",
+      title: "Write Product Descriptions",
+      client: "E-commerce Startup",
+      amount: 15000,
+      status: "Completed",
+      progress: 100,
       deadline: "Completed",
-      client: "Mrs. Adebisi",
+      category: "Writing",
+      priority: "medium",
+      messages: 0,
+      rating: 5,
     },
     {
       id: 3,
-      title: "Event planning for birthday party",
-      category: "Event Planning",
-      amount: 25000,
-      status: "pending",
-      deadline: "5 days",
-      client: "Kemi Okafor",
+      title: "University Event Photography",
+      client: "Student Union UNILAG",
+      amount: 40000,
+      status: "Pending Review",
+      progress: 100,
+      deadline: "Under Review",
+      category: "Photography",
+      priority: "medium",
+      messages: 1,
     },
   ];
 
-  const opportunities = [
+  // New opportunities based on user skills
+  const recommendations = [
     {
       id: 1,
-      title: "Content Writer Needed",
-      category: "Content Creation",
-      amount: 8000,
-      timeframe: "3 days",
-      applicants: 12,
+      title: "Logo Design for Fintech Startup",
+      amount: 30000,
+      category: "Design",
+      match: 95,
+      skills: ["Logo Design", "Brand Identity", "Adobe Illustrator"],
+      client: "TechStart Nigeria",
+      urgency: "Medium",
+      applications: 12,
     },
     {
       id: 2,
-      title: "Mobile App Design",
-      category: "Freelancing",
-      amount: 35000,
-      timeframe: "1 week",
-      applicants: 8,
+      title: "Social Media Content Creation",
+      amount: 20000,
+      category: "Content Creation",
+      match: 88,
+      skills: ["Content Writing", "Instagram", "Canva"],
+      client: "Beauty Brand",
+      urgency: "High",
+      applications: 8,
     },
     {
       id: 3,
-      title: "Physics Tutor Required",
-      category: "Tutoring",
-      amount: 3000,
-      timeframe: "Per session",
-      applicants: 5,
+      title: "Website Copywriting",
+      amount: 45000,
+      category: "Writing",
+      match: 82,
+      skills: ["Copywriting", "SEO", "Marketing"],
+      client: "Digital Agency",
+      urgency: "Low",
+      applications: 15,
     },
   ];
 
-  const getStatusColor = (status: string) => {
+  // Real-time notifications
+  const recentNotifications = [
+    {
+      id: 1,
+      type: "message",
+      title: "New message from Fashion Brand Lagos",
+      message: "Client has approved your design concept",
+      time: "5 min ago",
+      read: false,
+      priority: "high",
+    },
+    {
+      id: 2,
+      type: "payment",
+      title: "Payment received",
+      message: "₦15,000 has been credited to your wallet",
+      time: "1 hour ago",
+      read: false,
+      priority: "medium",
+    },
+    {
+      id: 3,
+      type: "job",
+      title: "New job match",
+      message: "3 new jobs match your skills",
+      time: "2 hours ago",
+      read: true,
+      priority: "low",
+    },
+    {
+      id: 4,
+      type: "review",
+      title: "New review received",
+      message: "Client left you a 5-star review",
+      time: "3 hours ago",
+      read: true,
+      priority: "medium",
+    },
+  ];
+
+  // Quick stats
+  const quickStats = [
+    {
+      label: "This Month",
+      value: `₦${(userData.totalEarnings * 0.3).toLocaleString()}`,
+      change: "+23%",
+      trend: "up",
+      icon: DollarSign,
+    },
+    {
+      label: "Active Proposals",
+      value: "7",
+      change: "+2",
+      trend: "up",
+      icon: Eye,
+    },
+    {
+      label: "Profile Views",
+      value: "156",
+      change: "+12%",
+      trend: "up",
+      icon: Users,
+    },
+    {
+      label: "Success Rate",
+      value: "94%",
+      change: "+3%",
+      trend: "up",
+      icon: CheckCircle,
+    },
+  ];
+
+  const getStatusColor = (status) => {
     switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800";
-      case "in_progress":
+      case "In Progress":
         return "bg-blue-100 text-blue-800";
-      case "pending":
+      case "Completed":
+        return "bg-green-100 text-green-800";
+      case "Pending Review":
         return "bg-yellow-100 text-yellow-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle className="h-4 w-4" />;
-      case "in_progress":
-        return <Clock className="h-4 w-4" />;
-      case "pending":
-        return <AlertCircle className="h-4 w-4" />;
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "high":
+        return "border-l-red-500";
+      case "medium":
+        return "border-l-yellow-500";
+      case "low":
+        return "border-l-green-500";
       default:
-        return <Clock className="h-4 w-4" />;
+        return "border-l-gray-300";
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
-              >
-                <Menu className="h-6 w-6" />
-              </button>
-
-              <Link to="/dashboard" className="flex items-center space-x-2">
-                <div className="bg-gradient-to-r from-blue-600 to-green-500 p-2 rounded-lg">
-                  <Smartphone className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gray-900">
-                  Student Hub
-                </span>
-              </Link>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search opportunities..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64"
-                />
-              </div>
-
-              <Button variant="ghost" size="icon" className="relative">
-                <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                  3
-                </span>
-              </Button>
-
-              <div className="flex items-center space-x-3">
-                <Avatar>
-                  <AvatarImage src={userData.avatar} />
-                  <AvatarFallback>
-                    {userData.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="hidden md:block">
-                  <p className="text-sm font-medium text-gray-900">
-                    {userData.name}
-                  </p>
-                  <p className="text-xs text-gray-500">{userData.email}</p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="hidden md:flex"
-                >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Logout
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header user={user} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
+        {/* Welcome Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {userData.name.split(" ")[0]}! 👋
-          </h1>
-          <p className="text-gray-600">
-            Here's what's happening with your opportunities today
-          </p>
-          {user?.email && (
-            <p className="text-sm text-green-600 mt-1">
-              ✅ Successfully signed in as {user.email}
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Welcome back, {userData.name.split(" ")[0]}! 👋
+              </h1>
+              <p className="text-gray-600 mt-1">
+                {userData.university} • {userData.course} • {userData.year}
+              </p>
+            </div>
+            <div className="mt-4 sm:mt-0 flex items-center space-x-3">
+              <Badge variant="outline" className="flex items-center space-x-1">
+                <Star className="h-3 w-3 fill-current text-yellow-500" />
+                <span>{userData.rating}</span>
+              </Badge>
+              <Badge variant="outline">{userData.skillLevel}</Badge>
+            </div>
+          </div>
+
+          {/* Profile Completion Alert */}
+          {userData.profileCompletion < 100 && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <AlertCircle className="h-5 w-5 text-blue-600 mr-2" />
+                  <span className="text-blue-800 font-medium">
+                    Complete your profile to get more opportunities
+                  </span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate("/profile")}
+                >
+                  Complete Profile
+                </Button>
+              </div>
+              <Progress value={userData.profileCompletion} className="mt-2" />
+              <p className="text-blue-600 text-sm mt-1">
+                {userData.profileCompletion}% complete
+              </p>
+            </div>
           )}
         </div>
 
-        {/* Stats Cards */}
+        {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Earnings
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                ₦{userData.totalEarnings.toLocaleString()}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                +₦12,000 from last month
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Jobs</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{userData.activeJobs}</div>
-              <p className="text-xs text-muted-foreground">
-                2 ending this week
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Completed Jobs
-              </CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{userData.completedJobs}</div>
-              <p className="text-xs text-muted-foreground">+3 this month</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Rating</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{userData.rating}</div>
-              <div className="flex items-center space-x-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`h-3 w-3 ${
-                      star <= userData.rating
-                        ? "text-yellow-400 fill-current"
-                        : "text-gray-300"
-                    }`}
-                  />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          {quickStats.map((stat, index) => (
+            <Card key={index}>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">
+                      {stat.label}
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {stat.value}
+                    </p>
+                    <p
+                      className={`text-sm ${
+                        stat.trend === "up" ? "text-green-600" : "text-red-600"
+                      }`}
+                    >
+                      {stat.change} from last month
+                    </p>
+                  </div>
+                  <div className="p-3 bg-blue-50 rounded-full">
+                    <stat.icon className="h-6 w-6 text-blue-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
+        {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          {/* Left Column - Jobs and Activity */}
+          <div className="lg:col-span-2 space-y-6">
             {/* Quick Actions */}
             <Card>
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-                <CardDescription>
-                  Jump into your most common tasks
-                </CardDescription>
+                <CardTitle className="flex items-center">
+                  <Zap className="h-5 w-5 mr-2 text-blue-600" />
+                  Quick Actions
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Link to="/jobs/post">
-                    <Button
-                      variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-blue-50 hover:border-blue-300"
-                    >
-                      <Plus className="h-6 w-6" />
-                      <span className="text-xs">Post Job</span>
-                    </Button>
-                  </Link>
-
-                  <Link to="/jobs">
-                    <Button
-                      variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-green-50 hover:border-green-300"
-                    >
-                      <Search className="h-6 w-6" />
-                      <span className="text-xs">Browse Jobs</span>
-                    </Button>
-                  </Link>
-
-                  <Link to="/wallet">
-                    <Button
-                      variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-yellow-50 hover:border-yellow-300"
-                    >
-                      <Wallet className="h-6 w-6" />
-                      <span className="text-xs">My Wallet</span>
-                    </Button>
-                  </Link>
-
-                  <Link to="/profile">
-                    <Button
-                      variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-purple-50 hover:border-purple-300"
-                    >
-                      <User className="h-6 w-6" />
-                      <span className="text-xs">My Profile</span>
-                    </Button>
-                  </Link>
-                </div>
-
-                {/* Additional Quick Links */}
-                <div className="grid grid-cols-3 gap-3 mt-4">
-                  <Link to="/categories/freelancing">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full text-xs"
-                    >
-                      Freelancing
-                    </Button>
-                  </Link>
-                  <Link to="/categories/tutoring">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full text-xs"
-                    >
-                      Tutoring
-                    </Button>
-                  </Link>
-                  <Link to="/categories/student-market">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full text-xs"
-                    >
-                      Marketplace
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="outline"
+                    className="h-20 flex-col space-y-2"
+                    onClick={() => navigate("/jobs")}
+                  >
+                    <Search className="h-6 w-6" />
+                    <span>Browse Jobs</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-20 flex-col space-y-2"
+                    onClick={() => navigate("/jobs/post")}
+                  >
+                    <Plus className="h-6 w-6" />
+                    <span>Post Job</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-20 flex-col space-y-2"
+                    onClick={() => navigate("/wallet")}
+                  >
+                    <Wallet className="h-6 w-6" />
+                    <span>Wallet</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-20 flex-col space-y-2"
+                    onClick={() => navigate("/profile")}
+                  >
+                    <User className="h-6 w-6" />
+                    <span>Profile</span>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Recent Jobs */}
+            {/* Active Jobs */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle>Recent Jobs</CardTitle>
-                  <CardDescription>Your latest job activities</CardDescription>
-                </div>
+                <CardTitle className="flex items-center">
+                  <Briefcase className="h-5 w-5 mr-2 text-blue-600" />
+                  Active Jobs ({recentJobs.length})
+                </CardTitle>
                 <Link to="/jobs/my-jobs">
                   <Button variant="outline" size="sm">
                     View All
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ArrowRight className="h-4 w-4 ml-1" />
                   </Button>
                 </Link>
               </CardHeader>
@@ -403,37 +394,139 @@ const Dashboard = () => {
                   {recentJobs.map((job) => (
                     <div
                       key={job.id}
-                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                      className={`p-4 border rounded-lg hover:shadow-md transition-shadow border-l-4 ${getPriorityColor(job.priority)}`}
                     >
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900 mb-1">
-                          {job.title}
-                        </h4>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
-                          <span>{job.category}</span>
-                          <span>•</span>
-                          <span>{job.client}</span>
-                          <span>•</span>
-                          <span>{job.deadline}</span>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <h3 className="font-semibold text-gray-900">
+                              {job.title}
+                            </h3>
+                            {job.liked && (
+                              <Heart className="h-4 w-4 text-red-500 fill-current" />
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {job.client}
+                          </p>
+                          <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <span className="flex items-center">
+                              <DollarSign className="h-3 w-3 mr-1" />₦
+                              {job.amount.toLocaleString()}
+                            </span>
+                            <span className="flex items-center">
+                              <Clock className="h-3 w-3 mr-1" />
+                              {job.deadline}
+                            </span>
+                            {job.messages > 0 && (
+                              <span className="flex items-center">
+                                <MessageSquare className="h-3 w-3 mr-1" />
+                                {job.messages} messages
+                              </span>
+                            )}
+                          </div>
+                          {job.status === "In Progress" && (
+                            <div className="mt-3">
+                              <div className="flex items-center justify-between text-sm">
+                                <span>Progress</span>
+                                <span>{job.progress}%</span>
+                              </div>
+                              <Progress value={job.progress} className="mt-1" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="ml-4 flex flex-col items-end">
+                          <Badge className={getStatusColor(job.status)}>
+                            {job.status}
+                          </Badge>
+                          {job.rating && (
+                            <div className="flex items-center mt-2">
+                              {[...Array(job.rating)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className="h-3 w-3 text-yellow-500 fill-current"
+                                />
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
-                      <div className="flex items-center space-x-4">
-                        <div className="text-right">
-                          <p className="font-semibold text-gray-900">
-                            ₦{job.amount.toLocaleString()}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recommended Jobs */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="flex items-center">
+                  <TrendingUp className="h-5 w-5 mr-2 text-green-600" />
+                  Recommended for You
+                </CardTitle>
+                <Link to="/jobs">
+                  <Button variant="outline" size="sm">
+                    See All
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </Link>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {recommendations.map((job) => (
+                    <div
+                      key={job.id}
+                      className="p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                      onClick={() => navigate(`/jobs/${job.id}`)}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <h3 className="font-semibold text-gray-900">
+                              {job.title}
+                            </h3>
+                            <Badge variant="outline" className="text-green-600">
+                              {job.match}% match
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {job.client}
                           </p>
-                          <Badge
-                            className={`${getStatusColor(job.status)} text-xs`}
-                          >
-                            {getStatusIcon(job.status)}
-                            <span className="ml-1 capitalize">
-                              {job.status.replace("_", " ")}
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {job.skills.slice(0, 3).map((skill, index) => (
+                              <Badge
+                                key={index}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                          <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <span className="flex items-center">
+                              <DollarSign className="h-3 w-3 mr-1" />₦
+                              {job.amount.toLocaleString()}
                             </span>
+                            <span className="flex items-center">
+                              <Users className="h-3 w-3 mr-1" />
+                              {job.applications} proposals
+                            </span>
+                          </div>
+                        </div>
+                        <div className="ml-4">
+                          <Badge
+                            variant={
+                              job.urgency === "High"
+                                ? "destructive"
+                                : job.urgency === "Medium"
+                                  ? "default"
+                                  : "secondary"
+                            }
+                          >
+                            {job.urgency}
                           </Badge>
                         </div>
-                        <Button variant="ghost" size="icon">
-                          <Eye className="h-4 w-4" />
-                        </Button>
                       </div>
                     </div>
                   ))}
@@ -442,84 +535,74 @@ const Dashboard = () => {
             </Card>
           </div>
 
-          {/* Sidebar */}
+          {/* Right Column - Notifications and Stats */}
           <div className="space-y-6">
-            {/* Profile Completion */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Profile Strength</CardTitle>
-                <CardDescription>
-                  Complete your profile to get more opportunities
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>Profile Completion</span>
-                      <span>85%</span>
-                    </div>
-                    <Progress value={85} className="h-2" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2 text-sm">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      <span>Profile photo added</span>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      <span>Skills listed</span>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm">
-                      <AlertCircle className="h-4 w-4 text-yellow-500" />
-                      <span>Add portfolio samples</span>
-                    </div>
-                  </div>
-
-                  <Link to="/profile">
-                    <Button size="sm" className="w-full">
-                      Complete Profile
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* New Opportunities */}
+            {/* Notifications */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle className="text-lg">New Opportunities</CardTitle>
-                  <CardDescription>Jobs matching your skills</CardDescription>
-                </div>
-                <Link to="/jobs">
-                  <Button variant="outline" size="sm">
-                    View All
-                  </Button>
-                </Link>
+                <CardTitle className="flex items-center">
+                  <Bell className="h-5 w-5 mr-2 text-yellow-600" />
+                  Notifications
+                  {recentNotifications.filter((n) => !n.read).length > 0 && (
+                    <Badge variant="destructive" className="ml-2">
+                      {recentNotifications.filter((n) => !n.read).length}
+                    </Badge>
+                  )}
+                </CardTitle>
+                <Button variant="ghost" size="sm">
+                  Mark all read
+                </Button>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {opportunities.map((opportunity) => (
+                <div className="space-y-3">
+                  {recentNotifications.slice(0, 4).map((notification) => (
                     <div
-                      key={opportunity.id}
-                      className="p-3 border rounded-lg hover:bg-gray-50"
+                      key={notification.id}
+                      className={`p-3 rounded-lg border cursor-pointer hover:bg-gray-50 ${
+                        !notification.read
+                          ? "bg-blue-50 border-blue-200"
+                          : "bg-white"
+                      }`}
                     >
-                      <h4 className="font-medium text-gray-900 mb-2">
-                        {opportunity.title}
-                      </h4>
-                      <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
-                        <span>{opportunity.category}</span>
-                        <span>{opportunity.timeframe}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-green-600">
-                          ₦{opportunity.amount.toLocaleString()}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {opportunity.applicants} applicants
-                        </span>
+                      <div className="flex items-start space-x-3">
+                        <div
+                          className={`p-1 rounded-full ${
+                            notification.type === "message"
+                              ? "bg-blue-100"
+                              : notification.type === "payment"
+                                ? "bg-green-100"
+                                : notification.type === "job"
+                                  ? "bg-purple-100"
+                                  : "bg-yellow-100"
+                          }`}
+                        >
+                          {notification.type === "message" && (
+                            <MessageSquare className="h-3 w-3 text-blue-600" />
+                          )}
+                          {notification.type === "payment" && (
+                            <DollarSign className="h-3 w-3 text-green-600" />
+                          )}
+                          {notification.type === "job" && (
+                            <Briefcase className="h-3 w-3 text-purple-600" />
+                          )}
+                          {notification.type === "review" && (
+                            <Star className="h-3 w-3 text-yellow-600" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900">
+                            {notification.title}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {notification.message}
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            {notification.time}
+                          </p>
+                        </div>
+                        {!notification.read && (
+                          <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -527,41 +610,85 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Community Activity */}
+            {/* Social Stats */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Community</CardTitle>
-                <CardDescription>Connect with fellow students</CardDescription>
+                <CardTitle className="flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-purple-600" />
+                  Community
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm">Active Students</span>
-                    </div>
-                    <span className="text-sm font-semibold">2,847</span>
+                    <span className="text-sm text-gray-600">Followers</span>
+                    <span className="font-semibold">{userData.followers}</span>
                   </div>
-
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <MessageSquare className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm">New Messages</span>
-                    </div>
-                    <span className="text-sm font-semibold">12</span>
+                    <span className="text-sm text-gray-600">Following</span>
+                    <span className="font-semibold">{userData.following}</span>
                   </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Reviews</span>
+                    <span className="font-semibold">{userData.reviews}</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => navigate("/community")}
+                  >
+                    <Users className="h-4 w-4 mr-2" />
+                    Join Community
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
-                  <Link to="/community">
-                    <Button variant="outline" size="sm" className="w-full">
-                      Join Community
-                    </Button>
-                  </Link>
+            {/* Achievements */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Award className="h-5 w-5 mr-2 text-orange-600" />
+                  Recent Achievements
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-green-100 rounded-full">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">First 5-Star Review</p>
+                      <p className="text-xs text-gray-500">2 days ago</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-blue-100 rounded-full">
+                      <DollarSign className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Earned ₦100k+</p>
+                      <p className="text-xs text-gray-500">1 week ago</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-purple-100 rounded-full">
+                      <BookOpen className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Completed 20 Jobs</p>
+                      <p className="text-xs text-gray-500">2 weeks ago</p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
