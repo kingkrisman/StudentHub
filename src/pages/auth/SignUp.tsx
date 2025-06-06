@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../App";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -33,6 +34,8 @@ import {
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -102,21 +105,60 @@ const SignUp = () => {
     "FCT",
   ];
 
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    if (error) setError(""); // Clear error when user types
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log("Registration data:", formData);
+    setIsLoading(true);
+    setError("");
 
-    // Mock successful registration - in real app, this would make API call
-    if (formData.agreeToTerms && formData.email && formData.password) {
-      // Simulate successful registration
-      alert("Registration successful! Welcome to Student Hub!");
-      // In real app, this would redirect after successful auth
-      // window.location.href = "/dashboard";
+    try {
+      // Validate required fields
+      if (
+        !formData.firstName ||
+        !formData.lastName ||
+        !formData.email ||
+        !formData.password
+      ) {
+        setError("Please fill in all required fields");
+        return;
+      }
+
+      if (!formData.agreeToTerms) {
+        setError("Please agree to the Terms of Service and Privacy Policy");
+        return;
+      }
+
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+
+      // Mock successful registration - in real app, this would make API call
+      const userData = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        avatar: "",
+      };
+
+      // Update auth context
+      login(userData);
+
+      // Show success message briefly
+      console.log("Registration successful! Welcome to Student Hub!");
+
+      // Redirect to dashboard
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      setError("Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -460,12 +502,25 @@ const SignUp = () => {
                 </div>
               </div>
 
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+                  {error}
+                </div>
+              )}
+
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-lg py-3"
-                disabled={!formData.agreeToTerms}
+                disabled={!formData.agreeToTerms || isLoading}
               >
-                Create My Account
+                {isLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-top-transparent mr-2"></div>
+                    Creating Account...
+                  </>
+                ) : (
+                  "Create My Account"
+                )}
               </Button>
             </form>
 
