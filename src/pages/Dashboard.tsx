@@ -206,11 +206,16 @@ const Dashboard = () => {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {user.name.split(" ")[0]}! 👋
+            Welcome back, {user?.name?.split(' ')[0] || 'Student'}! 👋
           </h1>
           <p className="text-gray-600">
             Here's what's happening with your opportunities today
           </p>
+          {user?.email && (
+            <p className="text-sm text-green-600 mt-1">
+              ✅ Signed in as {user.email}
+            </p>
+          )}
         </div>
 
         {/* Stats Cards */}
