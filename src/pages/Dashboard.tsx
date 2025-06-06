@@ -289,7 +289,7 @@ const Dashboard = () => {
                   <Link to="/jobs/post">
                     <Button
                       variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2"
+                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-blue-50 hover:border-blue-300"
                     >
                       <Plus className="h-6 w-6" />
                       <span className="text-xs">Post Job</span>
@@ -299,7 +299,7 @@ const Dashboard = () => {
                   <Link to="/jobs">
                     <Button
                       variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2"
+                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-green-50 hover:border-green-300"
                     >
                       <Search className="h-6 w-6" />
                       <span className="text-xs">Browse Jobs</span>
@@ -309,7 +309,7 @@ const Dashboard = () => {
                   <Link to="/wallet">
                     <Button
                       variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2"
+                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-yellow-50 hover:border-yellow-300"
                     >
                       <Wallet className="h-6 w-6" />
                       <span className="text-xs">My Wallet</span>
@@ -319,16 +319,46 @@ const Dashboard = () => {
                   <Link to="/profile">
                     <Button
                       variant="outline"
-                      className="w-full h-20 flex flex-col items-center justify-center space-y-2"
+                      className="w-full h-20 flex flex-col items-center justify-center space-y-2 hover:bg-purple-50 hover:border-purple-300"
                     >
                       <User className="h-6 w-6" />
                       <span className="text-xs">My Profile</span>
                     </Button>
                   </Link>
                 </div>
+
+                {/* Additional Quick Links */}
+                <div className="grid grid-cols-3 gap-3 mt-4">
+                  <Link to="/categories/freelancing">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-xs"
+                    >
+                      Freelancing
+                    </Button>
+                  </Link>
+                  <Link to="/categories/tutoring">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-xs"
+                    >
+                      Tutoring
+                    </Button>
+                  </Link>
+                  <Link to="/categories/student-market">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-xs"
+                    >
+                      Marketplace
+                    </Button>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
-
             {/* Recent Jobs */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
