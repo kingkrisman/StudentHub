@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuth } from "../App";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +31,15 @@ import {
 } from "lucide-react";
 
 const Index = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (user?.isLoggedIn) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [user, navigate]);
   const hustleTypes = [
     {
       title: "Freelancing",
@@ -363,7 +374,7 @@ const Index = () => {
       <section className="py-20 bg-gradient-to-r from-blue-600 to-green-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            This is Not Just an App���It's a Movement
+            This is Not Just an App—It's a Movement
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
