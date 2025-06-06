@@ -37,8 +37,12 @@ import {
   TrendingUp,
   DollarSign,
 } from "lucide-react";
+import { useAuth } from "../App";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Wallet = () => {
+  const { user } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = useState("this_month");
   const [showWithdrawForm, setShowWithdrawForm] = useState(false);
   const [withdrawalMethod, setWithdrawalMethod] = useState("");
