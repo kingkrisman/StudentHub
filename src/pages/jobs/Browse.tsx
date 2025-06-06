@@ -41,7 +41,7 @@ import {
   TrendingUp,
   Calendar,
   Shield,
-  Verified,
+  CheckCircle2,
   ArrowUpDown,
   Grid,
   List,
@@ -446,7 +446,7 @@ const BrowseJobs = () => {
               <div className="flex items-center space-x-2">
                 <p className="font-medium text-sm">{job.client.name}</p>
                 {job.client.paymentVerified && (
-                  <Verified className="h-4 w-4 text-blue-500" />
+                  <CheckCircle2 className="h-4 w-4 text-blue-500" />
                 )}
               </div>
               <div className="flex items-center space-x-2 text-xs text-gray-500">
@@ -629,7 +629,7 @@ const BrowseJobs = () => {
                 {/* Price Range */}
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Budget Range: ₦{priceRange[0].toLocaleString()} - ₦
+                    Budget Range: ��{priceRange[0].toLocaleString()} - ₦
                     {priceRange[1].toLocaleString()}
                   </label>
                   <Slider
