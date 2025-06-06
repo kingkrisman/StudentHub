@@ -401,7 +401,7 @@ const EventPlanning = () => {
                 <SelectValue placeholder="Event Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 {eventTypes.map((type) => (
                   <SelectItem key={type.id} value={type.id}>
                     {type.name}

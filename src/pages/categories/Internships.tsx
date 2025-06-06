@@ -365,7 +365,7 @@ const Internships = () => {
                 <SelectValue placeholder="Field" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Fields</SelectItem>
+                <SelectItem value="all">All Fields</SelectItem>
                 {internshipFields.map((field) => (
                   <SelectItem key={field.id} value={field.id}>
                     {field.name}

@@ -292,7 +292,7 @@ const Freelancing = () => {
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 {subcategories.map((cat) => (
                   <SelectItem key={cat.id} value={cat.id}>
                     {cat.name}

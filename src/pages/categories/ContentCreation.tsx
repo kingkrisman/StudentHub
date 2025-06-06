@@ -352,7 +352,7 @@ const ContentCreation = () => {
                 <SelectValue placeholder="Content Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 {contentTypes.map((type) => (
                   <SelectItem key={type.id} value={type.id}>
                     {type.name}

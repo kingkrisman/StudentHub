@@ -304,7 +304,7 @@ const Tutoring = () => {
                 <SelectValue placeholder="Subject" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Subjects</SelectItem>
+                <SelectItem value="all">All Subjects</SelectItem>
                 {subjects.map((subject) => (
                   <SelectItem key={subject.id} value={subject.id}>
                     {subject.name}
