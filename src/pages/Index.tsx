@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Footer from "@/components/Footer";
 import {
   Users,
   Zap,
