@@ -31,6 +31,7 @@ import {
   AlertCircle,
   Smartphone,
   Menu,
+  LogOut,
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -44,12 +45,13 @@ const Dashboard = () => {
   };
 
   // Mock user data
-  const user = {
-    name: "Adebayo Johnson",
+  const userData = {
+    name: user?.name || "Student User",
+    email: user?.email || "student@university.edu.ng",
     university: "University of Lagos",
     level: "300 Level",
     course: "Computer Science",
-    avatar: "",
+    avatar: user?.avatar || "",
     rating: 4.8,
     completedJobs: 24,
     totalEarnings: 125000,
@@ -153,7 +155,7 @@ const Dashboard = () => {
                 <Menu className="h-6 w-6" />
               </button>
 
-              <Link to="/" className="flex items-center space-x-2">
+              <Link to="/dashboard" className="flex items-center space-x-2">
                 <div className="bg-gradient-to-r from-blue-600 to-green-500 p-2 rounded-lg">
                   <Smartphone className="h-6 w-6 text-white" />
                 </div>
@@ -182,9 +184,9 @@ const Dashboard = () => {
 
               <div className="flex items-center space-x-3">
                 <Avatar>
-                  <AvatarImage src={user.avatar} />
+                  <AvatarImage src={userData.avatar} />
                   <AvatarFallback>
-                    {user.name
+                    {userData.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
@@ -192,10 +194,19 @@ const Dashboard = () => {
                 </Avatar>
                 <div className="hidden md:block">
                   <p className="text-sm font-medium text-gray-900">
-                    {user.name}
+                    {userData.name}
                   </p>
-                  <p className="text-xs text-gray-500">{user.university}</p>
+                  <p className="text-xs text-gray-500">{userData.email}</p>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="hidden md:flex"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
               </div>
             </div>
           </div>
@@ -206,14 +217,14 @@ const Dashboard = () => {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {user?.name?.split(' ')[0] || 'Student'}! 👋
+            Welcome back, {userData.name.split(" ")[0]}! 👋
           </h1>
           <p className="text-gray-600">
             Here's what's happening with your opportunities today
           </p>
           {user?.email && (
             <p className="text-sm text-green-600 mt-1">
-              ✅ Signed in as {user.email}
+              ✅ Successfully signed in as {user.email}
             </p>
           )}
         </div>
@@ -229,7 +240,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                ₦{user.totalEarnings.toLocaleString()}
+                ₦{userData.totalEarnings.toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground">
                 +₦12,000 from last month
@@ -243,7 +254,7 @@ const Dashboard = () => {
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{user.activeJobs}</div>
+              <div className="text-2xl font-bold">{userData.activeJobs}</div>
               <p className="text-xs text-muted-foreground">
                 2 ending this week
               </p>
@@ -258,7 +269,7 @@ const Dashboard = () => {
               <CheckCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{user.completedJobs}</div>
+              <div className="text-2xl font-bold">{userData.completedJobs}</div>
               <p className="text-xs text-muted-foreground">+3 this month</p>
             </CardContent>
           </Card>
@@ -269,13 +280,13 @@ const Dashboard = () => {
               <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{user.rating}</div>
+              <div className="text-2xl font-bold">{userData.rating}</div>
               <div className="flex items-center space-x-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
                     className={`h-3 w-3 ${
-                      star <= user.rating
+                      star <= userData.rating
                         ? "text-yellow-400 fill-current"
                         : "text-gray-300"
                     }`}
@@ -372,6 +383,7 @@ const Dashboard = () => {
                 </div>
               </CardContent>
             </Card>
+
             {/* Recent Jobs */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
@@ -524,21 +536,15 @@ const Dashboard = () => {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Avatar>
-                  <AvatarImage src={user?.avatar} />
-                  <AvatarFallback>
-                    {user?.name.split(' ').map(n => n[0]).join('') || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="hidden md:block">
-                  <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
-                  <p className="text-xs text-gray-500">{user?.email || 'student@university.edu.ng'}</p>
-                </div>
-                <Button variant="ghost" size="sm" onClick={handleLogout} className="hidden md:flex">
-                  Logout
-                </Button>
-              </div>
+                    <div className="flex items-center space-x-2">
+                      <Users className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm">Active Students</span>
+                    </div>
+                    <span className="text-sm font-semibold">2,847</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
                       <MessageSquare className="h-4 w-4 text-gray-500" />
                       <span className="text-sm">New Messages</span>
                     </div>
