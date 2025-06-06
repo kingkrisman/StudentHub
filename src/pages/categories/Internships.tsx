@@ -39,7 +39,7 @@ import {
 } from "lucide-react";
 
 const Internships = () => {
-  const [selectedField, setSelectedField] = useState("");
+  const [selectedField, setSelectedField] = useState("all");
   const [selectedType, setSelectedType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 

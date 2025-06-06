@@ -38,7 +38,7 @@ import {
 } from "lucide-react";
 
 const Tutoring = () => {
-  const [selectedSubject, setSelectedSubject] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("all");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 

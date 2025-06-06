@@ -39,7 +39,7 @@ import {
 } from "lucide-react";
 
 const ContentCreation = () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 

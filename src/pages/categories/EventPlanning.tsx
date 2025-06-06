@@ -39,7 +39,7 @@ import {
 } from "lucide-react";
 
 const EventPlanning = () => {
-  const [selectedEventType, setSelectedEventType] = useState("");
+  const [selectedEventType, setSelectedEventType] = useState("all");
   const [selectedBudget, setSelectedBudget] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
