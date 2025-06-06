@@ -41,8 +41,12 @@ import {
   CheckCircle,
   DollarSign,
 } from "lucide-react";
+import { useAuth } from "../App";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Profile = () => {
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [newSkill, setNewSkill] = useState("");
