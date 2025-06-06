@@ -42,7 +42,7 @@ import {
   Calendar,
   Shield,
   Verified,
-  Sort,
+  ArrowUpDown,
   Grid,
   List,
   Eye,
@@ -743,7 +743,7 @@ const BrowseJobs = () => {
             {/* Sort Options */}
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-48">
-                <Sort className="h-4 w-4 mr-2" />
+                <ArrowUpDown className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
