@@ -245,6 +245,32 @@ const SignIn = () => {
               </Button>
             </div>
 
+            {/* Demo Login for Testing */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+              <p className="text-sm text-blue-800 font-medium mb-2">
+                Quick Demo Access:
+              </p>
+              <Button
+                onClick={() => {
+                  setFormData({
+                    email: "demo@studenthub.ng",
+                    password: "demo123",
+                    rememberMe: false,
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="w-full mb-2"
+                disabled={isLoading}
+              >
+                Fill Demo Credentials
+              </Button>
+              <p className="text-xs text-blue-600">
+                Click above to auto-fill demo credentials, then sign in to test
+                the platform
+              </p>
+            </div>
+
             <div className="text-center mt-6 text-sm text-gray-600">
               Don't have an account?{" "}
               <Link
