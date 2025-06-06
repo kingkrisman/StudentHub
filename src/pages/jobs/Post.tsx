@@ -37,6 +37,7 @@ import {
   AlertTriangle,
   Eye,
   Save,
+  ArrowRight,
 } from "lucide-react";
 
 const PostJob = () => {
