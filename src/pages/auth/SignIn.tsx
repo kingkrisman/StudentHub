@@ -105,6 +105,12 @@ const SignIn = () => {
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+                  {error}
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <div className="relative">
@@ -117,6 +123,7 @@ const SignIn = () => {
                     placeholder="your.email@university.edu.ng"
                     className="pl-10"
                     required
+                    disabled={isLoading}
                   />
                 </div>
               </div>
@@ -134,11 +141,13 @@ const SignIn = () => {
                     placeholder="Enter your password"
                     className="pr-10"
                     required
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                    disabled={isLoading}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -157,6 +166,7 @@ const SignIn = () => {
                     onCheckedChange={(checked) =>
                       handleInputChange("rememberMe", checked)
                     }
+                    disabled={isLoading}
                   />
                   <Label htmlFor="remember" className="text-sm">
                     Remember me
@@ -173,9 +183,19 @@ const SignIn = () => {
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-lg py-3"
+                disabled={isLoading}
               >
-                Sign In
-                <ArrowRight className="ml-2 h-5 w-5" />
+                {isLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-top-transparent mr-2"></div>
+                    Signing In...
+                  </>
+                ) : (
+                  <>
+                    Sign In
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </>
+                )}
               </Button>
             </form>
 
@@ -191,7 +211,7 @@ const SignIn = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" disabled={isLoading}>
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                   <path
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -213,7 +233,7 @@ const SignIn = () => {
                 Google
               </Button>
 
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" disabled={isLoading}>
                 <svg
                   className="mr-2 h-4 w-4"
                   fill="currentColor"
