@@ -562,10 +562,10 @@ const Wallet = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </CardContent>
-        </Card>
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
