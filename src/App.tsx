@@ -75,12 +75,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   // Mock user state - in a real app this would come from authentication service
-  const [user, setUser] = useState<User | null>({
-    name: "Adebayo Johnson",
-    email: "adebayo.johnson@unilag.edu.ng",
-    avatar: "",
-    isLoggedIn: true, // Set to false to test authentication flow
-  });
+  const [user, setUser] = useState<User | null>(null); // Start logged out to test auth flow
 
   const login = (userData: Omit<User, "isLoggedIn">) => {
     setUser({ ...userData, isLoggedIn: true });
