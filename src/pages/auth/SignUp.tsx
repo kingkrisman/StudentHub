@@ -110,6 +110,14 @@ const SignUp = () => {
     e.preventDefault();
     // Handle registration logic here
     console.log("Registration data:", formData);
+
+    // Mock successful registration - in real app, this would make API call
+    if (formData.agreeToTerms && formData.email && formData.password) {
+      // Simulate successful registration
+      alert("Registration successful! Welcome to Student Hub!");
+      // In real app, this would redirect after successful auth
+      // window.location.href = "/dashboard";
+    }
   };
 
   return (
