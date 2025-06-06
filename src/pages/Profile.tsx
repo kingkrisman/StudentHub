@@ -981,7 +981,9 @@ const Profile = () => {
                   </div>
                 </CardContent>
               </Card>
-        </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
 
       <Footer />
