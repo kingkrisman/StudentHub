@@ -187,6 +187,13 @@ const Footer = () => {
               Nigerian students, by students.
             </p>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
+              <Link
+                to="/sitemap"
+                className="text-sm text-gray-400 hover:text-white"
+              >
+                Site Map
+              </Link>
+              <span className="text-sm text-gray-400">•</span>
               <span className="text-sm text-gray-400">
                 Made with ❤️ in Nigeria
               </span>
