@@ -240,6 +240,25 @@ const Freelancing = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Breadcrumbs */}
+        <nav className="mb-6">
+          <ol className="flex items-center space-x-2 text-sm text-gray-500">
+            <li>
+              <Link to="/" className="hover:text-blue-600">
+                Home
+              </Link>
+            </li>
+            <li>/</li>
+            <li>
+              <Link to="/jobs" className="hover:text-blue-600">
+                Opportunities
+              </Link>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900 font-medium">Freelancing</li>
+          </ol>
+        </nav>
+
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-3 rounded-full w-fit mx-auto mb-6">
