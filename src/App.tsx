@@ -35,6 +35,7 @@ import Tutoring from "./pages/categories/Tutoring";
 import Help from "./pages/Help";
 import Community from "./pages/Community";
 import Safety from "./pages/Safety";
+import Sitemap from "./pages/Sitemap";
 
 // Auth Context
 interface User {
@@ -127,6 +128,7 @@ const App = () => {
               <Route path="/help" element={<Help />} />
               <Route path="/community" element={<Community />} />
               <Route path="/safety" element={<Safety />} />
+              <Route path="/sitemap" element={<Sitemap />} />
 
               {/* Protected routes */}
               <Route
