@@ -1,8 +1,9 @@
+import { useState, createContext, useContext } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -35,60 +36,148 @@ import Help from "./pages/Help";
 import Community from "./pages/Community";
 import Safety from "./pages/Safety";
 
+// Auth Context
+interface User {
+  name: string;
+  email: string;
+  avatar?: string;
+  isLoggedIn: boolean;
+}
+
+interface AuthContextType {
+  user: User | null;
+  login: (userData: Omit<User, "isLoggedIn">) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
+
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useAuth();
+  return user?.isLoggedIn ? (
+    <>{children}</>
+  ) : (
+    <Navigate to="/auth/signin" replace />
+  );
+};
+
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Index />} />
-          <Route path="/auth/signup" element={<SignUp />} />
-          <Route path="/auth/signin" element={<SignIn />} />
-          <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+const App = () => {
+  // Mock user state - in a real app this would come from authentication service
+  const [user, setUser] = useState<User | null>({
+    name: "Adebayo Johnson",
+    email: "adebayo.johnson@unilag.edu.ng",
+    avatar: "",
+    isLoggedIn: true, // Set to false to test authentication flow
+  });
 
-          {/* Protected routes */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/wallet" element={<Wallet />} />
+  const login = (userData: Omit<User, "isLoggedIn">) => {
+    setUser({ ...userData, isLoggedIn: true });
+  };
 
-          {/* Job/Gig routes */}
-          <Route path="/jobs" element={<BrowseJobs />} />
-          <Route path="/jobs/post" element={<PostJob />} />
-          <Route path="/jobs/my-jobs" element={<MyJobs />} />
-          <Route path="/jobs/:id" element={<JobDetails />} />
+  const logout = () => {
+    setUser(null);
+  };
 
-          {/* Service category routes */}
-          <Route path="/categories/freelancing" element={<Freelancing />} />
-          <Route
-            path="/categories/student-market"
-            element={<StudentMarket />}
-          />
-          <Route
-            path="/categories/event-planning"
-            element={<EventPlanning />}
-          />
-          <Route
-            path="/categories/content-creation"
-            element={<ContentCreation />}
-          />
-          <Route path="/categories/internships" element={<Internships />} />
-          <Route path="/categories/tutoring" element={<Tutoring />} />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <AuthContext.Provider value={{ user, login, logout }}>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/auth/signup" element={<SignUp />} />
+              <Route path="/auth/signin" element={<SignIn />} />
+              <Route
+                path="/auth/forgot-password"
+                element={<ForgotPassword />}
+              />
 
-          {/* Support routes */}
-          <Route path="/help" element={<Help />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/safety" element={<Safety />} />
+              {/* Public browse routes */}
+              <Route path="/jobs" element={<BrowseJobs />} />
+              <Route path="/jobs/:id" element={<JobDetails />} />
+              <Route path="/categories/freelancing" element={<Freelancing />} />
+              <Route
+                path="/categories/student-market"
+                element={<StudentMarket />}
+              />
+              <Route
+                path="/categories/event-planning"
+                element={<EventPlanning />}
+              />
+              <Route
+                path="/categories/content-creation"
+                element={<ContentCreation />}
+              />
+              <Route path="/categories/internships" element={<Internships />} />
+              <Route path="/categories/tutoring" element={<Tutoring />} />
+              <Route path="/help" element={<Help />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/safety" element={<Safety />} />
 
-          {/* Catch-all route - must be last */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+              {/* Protected routes */}
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/wallet"
+                element={
+                  <ProtectedRoute>
+                    <Wallet />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/jobs/post"
+                element={
+                  <ProtectedRoute>
+                    <PostJob />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/jobs/my-jobs"
+                element={
+                  <ProtectedRoute>
+                    <MyJobs />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Catch-all route - must be last */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthContext.Provider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
