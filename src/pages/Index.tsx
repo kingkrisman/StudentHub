@@ -276,35 +276,54 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {hustleTypes.map((hustle) => (
-              <Card
+              <Link
                 key={hustle.title}
-                className="hover:shadow-lg transition-shadow duration-300 border-0 shadow-sm"
+                to={
+                  hustle.title === "Freelancing"
+                    ? "/categories/freelancing"
+                    : hustle.title === "Student Market"
+                      ? "/categories/student-market"
+                      : hustle.title === "Event Planning"
+                        ? "/categories/event-planning"
+                        : hustle.title === "Content Creation"
+                          ? "/categories/content-creation"
+                          : hustle.title === "Internships"
+                            ? "/categories/internships"
+                            : hustle.title === "Tutoring"
+                              ? "/categories/tutoring"
+                              : "/jobs"
+                }
               >
-                <CardHeader className="pb-4">
-                  <div
-                    className={`w-12 h-12 rounded-lg ${hustle.color} flex items-center justify-center mb-4`}
-                  >
-                    {hustle.icon}
-                  </div>
-                  <CardTitle className="text-xl">{hustle.title}</CardTitle>
-                  <CardDescription className="text-gray-600">
-                    {hustle.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-green-500">
-                    <div className="text-sm text-gray-600 mb-1">Example:</div>
-                    <div className="font-semibold text-gray-900">
-                      {hustle.example}
+                <Card className="hover:shadow-lg transition-shadow duration-300 border-0 shadow-sm cursor-pointer">
+                  <CardHeader className="pb-4">
+                    <div
+                      className={`w-12 h-12 rounded-lg ${hustle.color} flex items-center justify-center mb-4`}
+                    >
+                      {hustle.icon}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    <CardTitle className="text-xl">{hustle.title}</CardTitle>
+                    <CardDescription className="text-gray-600">
+                      {hustle.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-green-500">
+                      <div className="text-sm text-gray-600 mb-1">Example:</div>
+                      <div className="font-semibold text-gray-900">
+                        {hustle.example}
+                      </div>
+                    </div>
+                    <div className="mt-4 flex items-center text-blue-600 text-sm font-medium">
+                      <span>Explore {hustle.title}</span>
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
       </section>
-
       {/* Why Students Love It */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
