@@ -363,7 +363,7 @@ const Index = () => {
       <section className="py-20 bg-gradient-to-r from-blue-600 to-green-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            This is Not Just an App—It's a Movement
+            This is Not Just an App���It's a Movement
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
@@ -449,93 +449,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="bg-gradient-to-r from-blue-600 to-green-500 p-2 rounded-lg">
-                  <Smartphone className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-lg font-bold">Student Hub</span>
-              </div>
-              <p className="text-gray-400 text-sm">
-                Empowering Nigerian students to earn, learn, and grow together.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Platform</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>
-                  <Link to="/jobs" className="hover:text-white">
-                    How It Works
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/community" className="hover:text-white">
-                    Success Stories
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/safety" className="hover:text-white">
-                    Safety Guidelines
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>
-                  <Link to="/help" className="hover:text-white">
-                    Help Center
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/help" className="hover:text-white">
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/community" className="hover:text-white">
-                    Community
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Cookie Policy
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>
-              &copy; 2024 Student Hub. All rights reserved. Built for Nigerian
-              students, by students.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
