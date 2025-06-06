@@ -36,7 +36,7 @@ import {
 } from "lucide-react";
 
 const Freelancing = () => {
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
   const subcategories = [
